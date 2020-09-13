@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 final _firestore = FirebaseFirestore.instance;
 var loggedInUser; //stores the users Email
+ScrollController _scrollController = new ScrollController();
 
 class ChatScreen extends StatefulWidget {
   static const id = 'chatScreen';
@@ -88,6 +89,13 @@ class _ChatScreenState extends State<ChatScreen> {
                             'messageTime': DateTime.now(),
                           },
                         );
+                        setState(() {
+                          _scrollController.animateTo(
+                            0.0,
+                            curve: Curves.easeOut,
+                            duration: const Duration(milliseconds: 3),
+                          );
+                        });
                         _message = '';
                         _controller.clear();
                       }
@@ -146,6 +154,7 @@ class MessageStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView(
+            controller: _scrollController,
             reverse: true,
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             children: messageBubbles,
